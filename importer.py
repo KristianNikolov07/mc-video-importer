@@ -1,13 +1,6 @@
 import subprocess
 import os
 
-video_file_path = "input.mp4"
-resource_pack_path = "resourcepack"
-datapack_path = "datapack"
-video_name = "test"
-namespace = "test"
-
-
 def CreateDatapack(datapack_path, namespace):
     with open(datapack_path + "/pack.mcmeta", "w") as f:
         f.write('{\n' \
@@ -50,9 +43,3 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
         f.write("scoreboard players add " + video_name + " event 1\n")
         f.writelines(frames)
         f.write("schedule function " + namespace + ":" + video_name + "/play 1t append")
-
-
-CreateDatapack(datapack_path, namespace)
-CreateResourcepack(resource_pack_path, namespace)
-ConvertVideo(video_file_path, resource_pack_path + "/assets/" + namespace + "/textures/overlays/" + video_name)
-GenerateFunctions(resource_pack_path + "/assets/" + namespace + "/textures/overlays/" + video_name, datapack_path + "/data/" + namespace + "/function", video_name, namespace)
