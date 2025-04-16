@@ -7,6 +7,7 @@ def CreateDatapack(datapack_path, namespace):
         '  "pack": {\n' \
         '    "description": "MC Video Importer",\n' \
         '    "pack_format": 18,\n' \
+        '    "supported_formats": [18, 46]'
         '  }\n' \
         '}')
     os.mkdir(datapack_path + "/data")
@@ -18,7 +19,8 @@ def CreateResourcepack(resourcepack_path, namespace):
         f.write('{\n' \
         '  "pack": {\n' \
         '    "description": "MC Video Importer",\n' \
-        '    "pack_format": 46,\n' \
+        '    "pack_format": 18,\n' \
+        '    "supported_formats": [18, 46]\n' \
         '  }\n' \
         '}')
     os.mkdir(resourcepack_path + "/assets")
@@ -40,6 +42,8 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
     os.mkdir(functions_output_path + "/" + video_name)
     with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
         f.write("scoreboard objectives add videos dummy\n")
-        f.write("scoreboard players add " + video_name + " event 1\n")
+        f.write("scoreboard players add " + video_name + " videos 1\n")
         f.writelines(frames)
-        f.write("schedule function " + namespace + ":" + video_name + "/play 1t append")
+        f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @p armor.head with air\n')
+        f.write("execute if score testvid videos matches .." + total_frames + " schedule function " + namespace + ":" + video_name + "/play 1t append")
+        

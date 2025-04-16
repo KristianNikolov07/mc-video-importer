@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "description": "MC Video Importer",
+    "pack_format": 18,
+    "supported_formats": [18, 46]  }
+}
