@@ -43,6 +43,9 @@ def on_convert_press():
         importer.CreateResourcepack(resourcepack_path, namespace)
         importer.ConvertVideo(video_path, resourcepack_path + "/assets/" + namespace + "/textures/overlays/" + video_name)
         importer.GenerateFunctions(resourcepack_path + "/assets/" + namespace + "/textures/overlays/" + video_name, datapack_path + "/data/" + namespace + "/function", video_name, namespace)
+        tkinter.Label(text="SUCCESS!").pack()
+
+
 
 top = tkinter.Tk()
 top.title("MC Video Importer")
