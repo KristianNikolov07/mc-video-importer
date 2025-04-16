@@ -3,7 +3,8 @@ This is a program that imports video to minecraft without the need of any mods.
 # How to install:
 1. Install [Python](https://python.org/)
 2. If you are on Linux install tkinter(`sudo apt install python3-tk` for a Debian based distro)
-3. Clone the repo
+3. Install [ffmpeg](https://ffmpeg.org)
+4. Clone the repo
 
 
 # How to use:
