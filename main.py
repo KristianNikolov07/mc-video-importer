@@ -69,13 +69,13 @@ rp_folder_select_button.pack()
 rp_folder_path_label = tkinter.Label(text="No folder selected")
 rp_folder_path_label.pack()
 
-video_select_label = tkinter.Label(text="Please select the folder where you want your resourcepack to be generated\n(the folder must be empty):")
+video_select_label = tkinter.Label(text="Please select the video file:")
 video_select_label.pack()
 
 video_select_button = tkinter.Button(text="Select Folder", command=select_video)
 video_select_button.pack()
 
-video_path_label = tkinter.Label(text="No folder selected")
+video_path_label = tkinter.Label(text="No file selected")
 video_path_label.pack()
 
 namespace_input_label = tkinter.Label(text="Namespace:")
