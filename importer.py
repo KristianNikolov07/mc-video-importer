@@ -50,3 +50,6 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
         f.write("scoreboard objectives add videos dummy\n")
         f.write("scoreboard players reset " + video_name + " videos\n")
         f.write("function " + namespace + ":" + video_name + "/show_frames\n")
+
+    with open(functions_output_path + "/" + video_name + "/stop.mcfunction", "w") as f:
+        f.write("scoreboard players set " + video_name + " videos " + str(total_frames))
