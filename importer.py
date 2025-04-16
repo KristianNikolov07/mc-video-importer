@@ -33,18 +33,19 @@ def CreateResourcepack(resourcepack_path, namespace):
     os.mkdir(resourcepack_path + "/assets/" + namespace + "/textures")
     os.mkdir(resourcepack_path + "/assets/" + namespace + "/textures/overlays")
 
-def ConvertVideo(video_file_path, resource_pack_path):
-    subprocess.run('ffmpeg -i ' + video_file_path + ' -vf "fps=20" ' + resource_pack_path + '/%d.png', shell=True)
+def ConvertVideo(video_file_path, output_folder_path):
+    os.mkdir(output_folder_path)
+    subprocess.run('ffmpeg -i ' + video_file_path + ' -vf "fps=20" ' + output_folder_path + '/%d.png', shell=True)
 
-def GenerateDatapack(resource_pack_path, datapack_path, video_name, namespace):
-    total_frames = len(os.listdir(resource_pack_path))
+def GenerateFunctions(video_frames_path, functions_output_path, video_name, namespace):
+    total_frames = len(os.listdir(video_frames_path))
     frames = []
     for i in range(total_frames):
         cam_overlay_path = namespace + ":overlays" + "/" + video_name + "/" + str(i + 1)
         frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @a armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
 
-    os.mkdir(datapack_path + "/" + video_name)
-    with open(datapack_path + "/" + video_name + "/play.mcfunction", "w") as f:
+    os.mkdir(functions_output_path + "/" + video_name)
+    with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
         f.write("scoreboard objectives add videos dummy\n")
         f.write("scoreboard players add " + video_name + " event 1\n")
         f.writelines(frames)
@@ -53,7 +54,5 @@ def GenerateDatapack(resource_pack_path, datapack_path, video_name, namespace):
 
 CreateDatapack(datapack_path, namespace)
 CreateResourcepack(resource_pack_path, namespace)
-
-#ConvertVideo(video_file_path, resource_pack_path)
-
-#GenerateDatapack(resource_pack_path, datapack_path, video_name, namespace)
+ConvertVideo(video_file_path, resource_pack_path + "/assets/" + namespace + "/textures/overlays/" + video_name)
+GenerateFunctions(resource_pack_path + "/assets/" + namespace + "/textures/overlays/" + video_name, datapack_path + "/data/" + namespace + "/function", video_name, namespace)
