@@ -32,11 +32,6 @@ def select_video():
 def on_convert_press():
     namespace = namespace_input.get()
     video_name = video_name_input.get()
-    print(datapack_path)
-    print(resourcepack_path)
-    print(video_path)
-    print(video_name)
-    print(namespace)
     if datapack_path and resourcepack_path and video_path and video_name and namespace:
         print("aaaaaa")
         importer.CreateDatapack(datapack_path, namespace)
