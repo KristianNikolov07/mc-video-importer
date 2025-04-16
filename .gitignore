@@ -4,3 +4,6 @@ test
 datapack
 resourcepack
 input.mp4
+build
+dist
+main.spec
