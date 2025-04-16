@@ -1,6 +1,7 @@
 import importer
 import tkinter
 from tkinter import filedialog
+
 datapack_path = ""
 resourcepack_path = ""
 video_path = ""
@@ -45,7 +46,7 @@ def on_convert_press():
 top = tkinter.Tk()
 top.title("MC Video Importer")
 top.resizable(False, False)
-top.geometry("800x800")
+top.geometry("500x500")
 
 
 
