@@ -35,7 +35,7 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
     frames = []
     for i in range(total_frames):
         cam_overlay_path = namespace + ":overlays" + "/" + video_name + "/" + str(i + 1)
-        frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @a armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
+        frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @p armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
 
     os.mkdir(functions_output_path + "/" + video_name)
     with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
