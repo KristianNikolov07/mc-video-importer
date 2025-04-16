@@ -71,7 +71,7 @@ rp_folder_path_label.pack()
 video_select_label = tkinter.Label(text="Please select the video file:")
 video_select_label.pack()
 
-video_select_button = tkinter.Button(text="Select Folder", command=select_video)
+video_select_button = tkinter.Button(text="Select File", command=select_video)
 video_select_button.pack()
 
 video_path_label = tkinter.Label(text="No file selected")
