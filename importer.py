@@ -40,10 +40,13 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
         frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @p armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
 
     os.mkdir(functions_output_path + "/" + video_name)
-    with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
-        f.write("scoreboard objectives add videos dummy\n")
+    with open(functions_output_path + "/" + video_name + "/show_frames.mcfunction", "w") as f:
         f.write("scoreboard players add " + video_name + " videos 1\n")
         f.writelines(frames)
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @p armor.head with air\n')
-        f.write("execute if score testvid videos matches .." + total_frames + " schedule function " + namespace + ":" + video_name + "/play 1t append")
-        
+        f.write("execute if score testvid videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/show_frames 1t append")
+    
+    with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
+        f.write("scoreboard objectives add videos dummy\n")
+        f.write("scoreboard players reset " + video_name + " videos\n")
+        f.write("function " + namespace + ":" + video_name + "/show_frames\n")
