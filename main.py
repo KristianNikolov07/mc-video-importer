@@ -1,6 +1,7 @@
 import importer
 import tkinter
 from tkinter import filedialog
+from tkinter import messagebox
 
 datapack_path = "output/datapack"
 resourcepack_path = "output/resourcepack"
@@ -34,7 +35,6 @@ def on_convert_press():
     namespace = namespace_input.get()
     video_name = video_name_input.get()
     if video_path and video_name and namespace:
-        convert_button.destroy()
         converting_label = tkinter.Label(text="Converting...")
         converting_label.pack()
         importer.SetupOutputDir()
@@ -43,7 +43,8 @@ def on_convert_press():
         importer.ConvertVideo(video_path, namespace, video_name)
         importer.GenerateFunctions(video_name, namespace)
         converting_label.destroy()
-        tkinter.Label(text="SUCCESS!").pack()
+        messagebox.showinfo("MC Video Importer", "Video converted successfully!")
+    
 
 
 
