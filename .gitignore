@@ -7,3 +7,4 @@ input.mp4
 build
 dist
 main.spec
+__pycache__

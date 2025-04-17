@@ -1,6 +1,11 @@
 import subprocess
 import os
 
+def SetupOutputDir():
+    os.makedirs("output", exist_ok=True)
+    os.makedirs("output/datapack", exist_ok=True)
+    os.makedirs("output/resourcepack", exist_ok=True)
+
 def CreateDatapack(datapack_path, namespace):
     with open(datapack_path + "/pack.mcmeta", "w") as f:
         f.write('{\n' \
@@ -10,9 +15,9 @@ def CreateDatapack(datapack_path, namespace):
         '    "supported_formats": [18, 46]'
         '  }\n' \
         '}')
-    os.mkdir(datapack_path + "/data")
-    os.mkdir(datapack_path + "/data/" + namespace)
-    os.mkdir(datapack_path + "/data/" + namespace + "/function")
+    os.makedirs(datapack_path + "/data", exist_ok=True)
+    os.makedirs(datapack_path + "/data/" + namespace, exist_ok=True)
+    os.makedirs(datapack_path + "/data/" + namespace + "/function", exist_ok=True)
 
 def CreateResourcepack(resourcepack_path, namespace):
     with open(resourcepack_path + "/pack.mcmeta", "w") as f:
@@ -23,13 +28,13 @@ def CreateResourcepack(resourcepack_path, namespace):
         '    "supported_formats": [18, 46]\n' \
         '  }\n' \
         '}')
-    os.mkdir(resourcepack_path + "/assets")
-    os.mkdir(resourcepack_path + "/assets/" + namespace)
-    os.mkdir(resourcepack_path + "/assets/" + namespace + "/textures")
-    os.mkdir(resourcepack_path + "/assets/" + namespace + "/textures/overlays")
+    os.makedirs(resourcepack_path + "/assets", exist_ok=True)
+    os.makedirs(resourcepack_path + "/assets/" + namespace, exist_ok=True)
+    os.makedirs(resourcepack_path + "/assets/" + namespace + "/textures", exist_ok=True)
+    os.makedirs(resourcepack_path + "/assets/" + namespace + "/textures/overlays", exist_ok=True)
 
 def ConvertVideo(video_file_path, output_folder_path):
-    os.mkdir(output_folder_path)
+    os.makedirs(output_folder_path, exist_ok=True)
     subprocess.run('ffmpeg -i ' + video_file_path + ' -vf "fps=20" ' + output_folder_path + '/%d.png', shell=True)
 
 def GenerateFunctions(video_frames_path, functions_output_path, video_name, namespace):
@@ -39,7 +44,7 @@ def GenerateFunctions(video_frames_path, functions_output_path, video_name, name
         cam_overlay_path = namespace + ":overlays" + "/" + video_name + "/" + str(i + 1)
         frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @p armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
 
-    os.mkdir(functions_output_path + "/" + video_name)
+    os.makedirs(functions_output_path + "/" + video_name, exist_ok=True)
     with open(functions_output_path + "/" + video_name + "/show_frames.mcfunction", "w") as f:
         f.write("scoreboard players add " + video_name + " videos 1\n")
         f.writelines(frames)
