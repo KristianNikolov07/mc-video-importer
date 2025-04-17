@@ -1,12 +1,15 @@
 import subprocess
 import os
 
+datapack_path = "output/datapack"
+resourcepack_path = "output/resourcepack"
+
 def SetupOutputDir():
     os.makedirs("output", exist_ok=True)
     os.makedirs("output/datapack", exist_ok=True)
     os.makedirs("output/resourcepack", exist_ok=True)
 
-def CreateDatapack(datapack_path, namespace):
+def CreateDatapack(namespace):
     with open(datapack_path + "/pack.mcmeta", "w") as f:
         f.write('{\n' \
         '  "pack": {\n' \
@@ -19,7 +22,7 @@ def CreateDatapack(datapack_path, namespace):
     os.makedirs(datapack_path + "/data/" + namespace, exist_ok=True)
     os.makedirs(datapack_path + "/data/" + namespace + "/function", exist_ok=True)
 
-def CreateResourcepack(resourcepack_path, namespace):
+def CreateResourcepack(namespace):
     with open(resourcepack_path + "/pack.mcmeta", "w") as f:
         f.write('{\n' \
         '  "pack": {\n' \
@@ -33,11 +36,14 @@ def CreateResourcepack(resourcepack_path, namespace):
     os.makedirs(resourcepack_path + "/assets/" + namespace + "/textures", exist_ok=True)
     os.makedirs(resourcepack_path + "/assets/" + namespace + "/textures/overlays", exist_ok=True)
 
-def ConvertVideo(video_file_path, output_folder_path):
+def ConvertVideo(video_file_path, namespace, video_name):
+    output_folder_path = resourcepack_path + "/assets/" + namespace + "/textures/overlays/" + video_name
     os.makedirs(output_folder_path, exist_ok=True)
     subprocess.run('ffmpeg -i ' + video_file_path + ' -vf "fps=20" ' + output_folder_path + '/%d.png', shell=True)
 
-def GenerateFunctions(video_frames_path, functions_output_path, video_name, namespace):
+def GenerateFunctions(video_name, namespace):
+    video_frames_path = resourcepack_path + "/assets/" + namespace + "/textures/overlays/" + video_name
+    functions_output_path =  datapack_path + "/data/" + namespace + "/function"
     total_frames = len(os.listdir(video_frames_path))
     frames = []
     for i in range(total_frames):
