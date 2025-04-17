@@ -77,7 +77,7 @@ def GenerateFunctions(video_name, namespace):
         f.write("scoreboard players add " + video_name + " videos 1\n")
         f.writelines(frames)
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @p armor.head with air\n')
-        f.write("execute if score testvid videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/show_frames 1t append")
+        f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/show_frames 1t append")
     
     with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
         f.write("playsound " + namespace + ":" + video_name + " master @p ~ ~ ~ \n")
