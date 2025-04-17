@@ -1,5 +1,6 @@
 import importer
 import tkinter
+from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
@@ -35,12 +36,14 @@ def on_convert_press():
     namespace = namespace_input.get()
     video_name = video_name_input.get()
     if video_path and video_name and namespace:
-        converting_label = tkinter.Label(text="Converting...")
+        converting_label = ttk.Label(text="Converting...")
         converting_label.pack()
         importer.SetupOutputDir()
         importer.CreateDatapack(namespace)
         importer.CreateResourcepack(namespace)
         importer.ConvertVideo(video_path, namespace, video_name)
+        importer.ExportSound(video_path, namespace, video_name)
+        importer.GenerateSoundsJson(namespace, video_name)
         importer.GenerateFunctions(video_name, namespace)
         converting_label.destroy()
         messagebox.showinfo("MC Video Importer", "Video converted successfully!")
@@ -55,44 +58,44 @@ top.geometry("400x400")
 
 
 
-# dp_folder_select_label = tkinter.Label(text="Please select the folder where you want your datapack to be generated\n(the folder must be empty):")
+# dp_folder_select_label = ttk.Label(text="Please select the folder where you want your datapack to be generated\n(the folder must be empty):")
 # dp_folder_select_label.pack()
 
-# dp_folder_select_button = tkinter.Button(text="Select Folder", command=select_dp_folder)
+# dp_folder_select_button = ttk.Button(text="Select Folder", command=select_dp_folder)
 # dp_folder_select_button.pack()
 
-# dp_folder_path_label = tkinter.Label(text="No folder selected")
+# dp_folder_path_label = ttk.Label(text="No folder selected")
 # dp_folder_path_label.pack()
 
-# rp_folder_select_label = tkinter.Label(text="Please select the folder where you want your resourcepack to be generated\n(the folder must be empty):")
+# rp_folder_select_label = ttk.Label(text="Please select the folder where you want your resourcepack to be generated\n(the folder must be empty):")
 # rp_folder_select_label.pack()
 
-# rp_folder_select_button = tkinter.Button(text="Select Folder", command=select_rp_folder)
+# rp_folder_select_button = ttk.Button(text="Select Folder", command=select_rp_folder)
 # rp_folder_select_button.pack()
 
-# rp_folder_path_label = tkinter.Label(text="No folder selected")
+# rp_folder_path_label = ttk.Label(text="No folder selected")
 # rp_folder_path_label.pack()
 
-video_select_button = tkinter.Button(text="Select Video", command=select_video)
-video_select_button.pack()
+video_select_button = ttk.Button(text="Select Video", command=select_video)
+video_select_button.pack(pady=(10,0))
 
-video_path_label = tkinter.Label(text="No file selected")
+video_path_label = ttk.Label(text="No file selected")
 video_path_label.pack()
 
-namespace_input_label = tkinter.Label(text="Namespace:")
-namespace_input_label.pack()
+namespace_input_label = ttk.Label(text="Namespace:")
+namespace_input_label.pack(pady=(10, 0))
 
-namespace_input = tkinter.Entry()
+namespace_input = ttk.Entry()
 namespace_input.pack()
 
-video_name_input_label = tkinter.Label(text="Video name:")
-video_name_input_label.pack()
+video_name_input_label = ttk.Label(text="Video name:")
+video_name_input_label.pack(pady=(10, 0))
 
-video_name_input = tkinter.Entry()
+video_name_input = ttk.Entry()
 video_name_input.pack()
 
-convert_button = tkinter.Button(text="Convert", command=on_convert_press)
-convert_button.pack()
+convert_button = ttk.Button(text="Convert", command=on_convert_press)
+convert_button.pack(pady=10)
 
 
 
