@@ -45,7 +45,7 @@ def ConvertVideo(video_file_path, namespace, video_name):
 
 def ExportSound(video_file_path, namespace, video_name):
     output_path = resourcepack_path + "/assets/" + namespace + "/sounds/" + video_name
-    subprocess.run('ffmpeg -i ' + video_file_path + ' -vn -acodec libvorbis ' + output_path + '.ogg')
+    subprocess.run('ffmpeg -i ' + video_file_path + ' -vn -acodec libvorbis ' + output_path + '.ogg', shell=True)
 
 def GenerateSoundsJson(namespace, video_name):
     file_path = resourcepack_path + "/assets/" + namespace + "/sounds.json"
@@ -70,21 +70,29 @@ def GenerateFunctions(video_name, namespace):
     frames = []
     for i in range(total_frames):
         cam_overlay_path = namespace + ":overlays" + "/" + video_name + "/" + str(i + 1)
-        frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @p armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
+        frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @a[tag=watches_' + video_name + '] armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
 
     os.makedirs(functions_output_path + "/" + video_name, exist_ok=True)
+
+    #show_frames.mcfunction
     with open(functions_output_path + "/" + video_name + "/show_frames.mcfunction", "w") as f:
         f.write("scoreboard players add " + video_name + " videos 1\n")
         f.writelines(frames)
-        f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @p armor.head with air\n')
+        f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @a[tag=watches_' + video_name + '] armor.head with air\n')
+        f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run tag @a[tag=watches_' + video_name + '] remove watches_' + video_name + '\n')
         f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/show_frames 1t append")
     
+    #play.mcfunction
     with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
-        f.write("playsound " + namespace + ":" + video_name + " master @p ~ ~ ~ \n")
+        f.write("tag @s add watches_" + video_name + "\n")
+        f.write("playsound " + namespace + ":" + video_name + " master @s ~ ~ ~ \n")
         f.write("scoreboard objectives add videos dummy\n")
         f.write("scoreboard players reset " + video_name + " videos\n")
         f.write("function " + namespace + ":" + video_name + "/show_frames\n")
 
+    #stop.mcfunction
     with open(functions_output_path + "/" + video_name + "/stop.mcfunction", "w") as f:
         f.write("scoreboard players set " + video_name + " videos " + str(total_frames) + "\n")
-        f.write("stopsound @p\n")
+        f.write('item replace entity @a[tag=watches_' + video_name + '] armor.head with air\n')
+        f.write("stopsound @a[tag=watches_" + video_name + "]\n")
+        f.write("tag @a[tag=watches_" + video_name + "] remove watches_" + video_name)

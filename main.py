@@ -41,6 +41,7 @@ def on_convert_press():
         importer.SetupOutputDir()
         importer.CreateDatapack(namespace)
         importer.CreateResourcepack(namespace)
+        
         importer.ConvertVideo(video_path, namespace, video_name)
         importer.ExportSound(video_path, namespace, video_name)
         importer.GenerateSoundsJson(namespace, video_name)
