@@ -15,5 +15,5 @@ This is a program that imports video to minecraft without the need of any mods.
 5. Open Minecraft
 6. Enable the resourcepack
 7. Make sure the datapack is enabled
-8. Use `/function <your namespace>:<video name>/play` to play the video
+8. Use `/execute as <player name or selector> run function <your namespace>:<video name>/play` to play the video
 9. Enjoy
