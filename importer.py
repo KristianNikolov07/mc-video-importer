@@ -29,7 +29,7 @@ def CreateResourcepack(namespace):
         '  "pack": {\n' \
         '    "description": "MC Video Importer",\n' \
         '    "pack_format": 41,\n' \
-        '    "supported_formats": [41, 56]\n' \
+        '    "supported_formats": [41, 63]\n' \
         '  }\n' \
         '}')
     os.makedirs(resourcepack_path + "/assets", exist_ok=True)
