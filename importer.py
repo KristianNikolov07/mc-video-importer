@@ -67,50 +67,29 @@ def GenerateFunctions(video_name, namespace):
     video_frames_path = resourcepack_path + "/assets/" + namespace + "/textures/overlays/" + video_name
     functions_output_path =  datapack_path + "/data/" + namespace + "/function"
     total_frames = len(os.listdir(video_frames_path))
-    frames = []
-    for i in range(total_frames):
-        cam_overlay_path = namespace + ":overlays" + "/" + video_name + "/" + str(i + 1)
-        frames.append('execute if score ' + video_name + ' videos matches ' + str(i + 1) + ' run item replace entity @a[tag=watches_' + video_name + '] armor.head with glass[equippable={slot:"head", camera_overlay: "' + cam_overlay_path + '"}]\n')
-
+    
     os.makedirs(functions_output_path + "/" + video_name, exist_ok=True)
+    #frames.mcfunction
+    with open(functions_output_path + "/" + video_name + "/frames.mcfunction", "w") as f:
+        f.write('scoreboard players add ' + video_name + ' videos 1\n')
+        f.write('execute store result storage ' + namespace + ':' + video_name + '_video frame int 1 run scoreboard players get ' + video_name + ' videos\n')
+        f.write('function ' + namespace + ':' + video_name + '/show_frame with storage ' + namespace + ':' + video_name + '_video\n')
 
-    #frame groups
-    groups = int(total_frames / 50)
-
-    for i in range(groups):
-        if i + 1 != groups:
-            with open(functions_output_path + "/" + video_name + "/frames_" + str(i) + ".mcfunction", "w") as f:
-                lines = []
-                for j in range(i * 50, i * 50 + 50):
-                    lines.append(frames[j])
-                f.writelines(lines)
-        else:
-            with open(functions_output_path + "/" + video_name + "/frames_" + str(i) + ".mcfunction", "w") as f:
-                lines = []
-                for j in range(i * 50, total_frames):
-                    lines.append(frames[j])
-                f.writelines(lines)
-
-
-    #frames_manager.mcfunction
-    with open(functions_output_path + "/" + video_name + "/frames_manager.mcfunction", "w") as f:
-        f.write("scoreboard players add " + video_name + " videos 1\n")
-
-        for i in range(groups - 1):
-            f.write('execute if score ' + video_name + ' videos matches ' + str(i*50 + 1) + '..' + str(i*50 + 50) + ' run function ' + namespace + ":" + video_name + "/frames_" + str(i) + "\n")
-        f.write('execute if score ' + video_name + ' videos matches ' + str((groups - 1)*50 + 1) + '..' + str(total_frames + 1) + ' run function ' + namespace + ":" + video_name + "/frames_" + str(i) + "\n")
-        
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @a[tag=watches_' + video_name + '] armor.head with air\n')
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run tag @a[tag=watches_' + video_name + '] remove watches_' + video_name + '\n')
-        f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/frames_manager 1t append")
+        f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/frames 1t append")
     
+    #show_frame.mcfunction
+    with open(functions_output_path + "/" + video_name + "/show_frame.mcfunction", "w") as f:
+        f.write('$item replace entity @a[tag=watches_' + video_name + '] armor.head with glass[equippable={slot:"head", camera_overlay: "' + namespace + ':overlays/' + video_name + '/$(frame)"}]')
+
     #play.mcfunction
     with open(functions_output_path + "/" + video_name + "/play.mcfunction", "w") as f:
         f.write("tag @s add watches_" + video_name + "\n")
         f.write("playsound " + namespace + ":" + video_name + " master @s ~ ~ ~\n")
         f.write("scoreboard objectives add videos dummy\n")
         f.write("scoreboard players reset " + video_name + " videos\n")
-        f.write("function " + namespace + ":" + video_name + "/show_frames\n")
+        f.write("function " + namespace + ":" + video_name + "/frames\n")
 
     #stop.mcfunction
     with open(functions_output_path + "/" + video_name + "/stop.mcfunction", "w") as f:
