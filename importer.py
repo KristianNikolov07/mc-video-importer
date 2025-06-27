@@ -77,7 +77,7 @@ def GenerateFunctions(video_name, namespace):
 
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run item replace entity @a[tag=watches_' + video_name + '] armor.head with air\n')
         f.write('execute if score ' + video_name + ' videos matches ' + str(total_frames + 1) + ' run tag @a[tag=watches_' + video_name + '] remove watches_' + video_name + '\n')
-        f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/frames 1t append")
+        f.write("execute if score " + video_name + " videos matches .." + str(total_frames + 1) + " run schedule function " + namespace + ":" + video_name + "/frames 1t replace")
     
     #show_frame.mcfunction
     with open(functions_output_path + "/" + video_name + "/show_frame.mcfunction", "w") as f:
